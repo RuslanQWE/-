@@ -31,7 +31,7 @@ jobs:
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TOKEN }}'
-          projectId: 'my-cloud-project-dfb28' # **ВАЖНО: Убедитесь, что это ваш Project ID!**
+          projectId: 'my-cloud-project-dfb28'
           channelId: live 
         env:
           FIREBASE_CLI_PREVIEWS_ENABLED: hostingchannels
