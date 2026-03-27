@@ -87,6 +87,33 @@
       `;
     });
   });
+
+  const functions = require('firebase-functions');
+
+exports.githubWebhookReceiver = functions.https.onRequest(async (req, res) => {
+  const githubEvent = req.headers['x-github-event'];
+  console.log('Received GitHub Webhook event:', githubEvent);
+
+  console.log('Payload:', req.body);
+
+  if (githubEvent === 'issues' && req.body.action === 'opened') {
+    const issueTitle = req.body.issue.title;
+    const issueUrl = req.body.issue.html_url;
+    console.log(`--- НОВЫЙ ISSUE ОТКРЫТ! ---`);
+    console.log(`Заголовок: "${issueTitle}"`);
+    console.log(`Ссылка: ${issueUrl}`);
+  }
+
+  else if (githubEvent === 'push') {
+    const commits = req.body.commits;
+    console.log(`--- ПОЛУЧЕН PUSH с ${commits.length} коммитами ---`);
+    commits.forEach(commit => {
+      console.log(`Коммит от ${commit.author.name}: "${commit.message}" (${commit.url})`);
+    });
+  }
+  
+  res.status(200).send('Webhook received and processed by Firebase Function!');
+});
 </script>
 </body>
 </html>
