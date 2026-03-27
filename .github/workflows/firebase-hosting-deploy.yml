@@ -29,7 +29,7 @@ jobs:
       - name: Deploy to Firebase 
         uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
+          repoToken: '${{ secrets.TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_TOKEN }}'
           projectId: 'my-cloud-project-dfb28'
           channelId: live 
