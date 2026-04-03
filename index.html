@@ -27,6 +27,14 @@
 </head>
 <body>
 
+<div id="dmSection" class="container" style="display:none;">
+  <h3>Личные сообщения</h3>
+  <input type="email" id="recipientEmail" placeholder="Email получателя">
+  <input type="text" id="dmContent" placeholder="Введите сообщение">
+  <button id="sendDM">Отправить</button>
+  <div id="dmFeed"></div>
+</div>
+  
 <div id="authSection" class="container" style="max-width: 500px; text-align: center;">
   <button id="loginBtn">Войти через Google</button>
   <div id="userInfo" style="display: none;" class="auth-bar">
