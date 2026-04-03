@@ -151,6 +151,55 @@
     });
   });
 
+// --- ЛОГИКА DM ---
+document.getElementById("sendDM").onclick = async () => {
+  const recipient = document.getElementById("recipientEmail").value;
+  const text = document.getElementById("dmContent").value;
+
+  if (!recipient || !text) return alert("Введите получателя и сообщение!");
+
+  try {
+    await addDoc(collection(db, "messages"), {
+      from: auth.currentUser.email,
+      to: recipient,
+      text: text,
+      timestamp: serverTimestamp()
+    });
+    document.getElementById("dmContent").value = "";
+  } catch (e) {
+    console.error(e);
+    alert("Ошибка при отправке DM");
+  }
+};
+
+// --- REAL-TIME ЛЕНТА DM ---
+const loadDMs = (recipient) => {
+  const q = query(
+    collection(db, "messages"),
+    orderBy("timestamp", "asc")
+  );
+
+  onSnapshot(q, (snapshot) => {
+    const feed = document.getElementById("dmFeed");
+    feed.innerHTML = "";
+    snapshot.forEach((docSnap) => {
+      const data = docSnap.data();
+      // показываем только сообщения между текущим пользователем и выбранным получателем
+      if (
+        (data.from === auth.currentUser.email && data.to === recipient) ||
+        (data.to === auth.currentUser.email && data.from === recipient)
+      ) {
+        feed.innerHTML += `<div class="post"><b>${data.from}:</b> ${data.text}</div>`;
+      }
+    });
+  });
+};
+
+// загружаем DM при вводе email получателя
+document.getElementById("recipientEmail").onchange = (e) => {
+  loadDMs(e.target.value);
+};
+  
   // Для тестов в консоли
   window.db = db;
 </script>
